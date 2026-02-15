@@ -28,6 +28,30 @@ jobs:
       - name: Test
         run: go test -race -count=1 ./...
 
+  fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+
+      - name: Fuzz protocol parser
+        run: go test -run='^$' -fuzz=FuzzUnmarshal -fuzztime=30s ./protocol/...
+
+      - name: Fuzz TOML parser
+        run: go test -run='^$' -fuzz=FuzzParseTOML -fuzztime=30s ./config/...
+
+      - name: Fuzz checkpoint replay
+        run: go test -run='^$' -fuzz=FuzzReplay -fuzztime=30s ./checkpoint/...
+
+      - name: Fuzz trace IDs
+        run: go test -run='^$' -fuzz=FuzzStartWithTraceID -fuzztime=30s ./trace/...
+
+      - name: Fuzz error handling
+        run: go test -run='^$' -fuzz=FuzzErrorMarshalUnmarshal -fuzztime=30s ./errors/...
+
   lint:
     runs-on: ubuntu-latest
     steps:

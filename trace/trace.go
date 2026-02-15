@@ -58,9 +58,29 @@ func Start(ctx context.Context, operation string) (context.Context, *Span) {
 	return context.WithValue(ctx, contextKey{}, s), s
 }
 
+// ValidID reports whether an ID contains only printable ASCII characters
+// and is within a reasonable length. This prevents log injection via
+// malicious trace/span IDs.
+func ValidID(id string) bool {
+	if id == "" || len(id) > 256 {
+		return false
+	}
+	for _, ch := range id {
+		if ch < 32 || ch > 126 {
+			return false
+		}
+	}
+	return true
+}
+
 // StartWithTraceID creates a span with an explicit trace ID. Use this when
 // receiving a message from another tool that includes a trace ID.
+// Invalid trace IDs are replaced with a new random ID.
 func StartWithTraceID(ctx context.Context, traceID, operation string) (context.Context, *Span) {
+	if !ValidID(traceID) {
+		traceID = newID()
+	}
+
 	s := &Span{
 		TraceID:   traceID,
 		SpanID:    newID(),
@@ -146,6 +166,8 @@ func NewID() string {
 
 func newID() string {
 	b := make([]byte, 16)
-	rand.Read(b)
+	if _, err := rand.Read(b); err != nil {
+		panic("mist: crypto/rand failed: " + err.Error())
+	}
 	return hex.EncodeToString(b)
 }

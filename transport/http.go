@@ -3,6 +3,7 @@ package transport
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"fmt"
 	"io"
 	"net/http"
@@ -27,8 +28,19 @@ type HTTP struct {
 func NewHTTP(targetURL string) *HTTP {
 	return &HTTP{
 		target: targetURL,
-		client: &http.Client{Timeout: 30 * time.Second},
-		inbox:  make(chan *protocol.Message, 256),
+		client: &http.Client{
+			Timeout: 10 * time.Second,
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					MinVersion: tls.VersionTLS12,
+				},
+				MaxIdleConns:        10,
+				IdleConnTimeout:     30 * time.Second,
+				DisableCompression:  false,
+				ForceAttemptHTTP2:   true,
+			},
+		},
+		inbox: make(chan *protocol.Message, 256),
 	}
 }
 
@@ -98,6 +110,10 @@ func (h *HTTP) ListenForMessages(addr string) error {
 		Addr:              addr,
 		Handler:           mux,
 		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       30 * time.Second,
+		MaxHeaderBytes:    1 << 20, // 1MB
 	}
 	h.mu.Unlock()
 

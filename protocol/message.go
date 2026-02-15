@@ -7,8 +7,13 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"time"
 )
+
+// MaxMessageSize is the maximum allowed size of a serialized message (10 MB).
+// This prevents resource exhaustion from oversized payloads.
+const MaxMessageSize = 10 << 20
 
 // Message types for inter-tool communication.
 const (
@@ -67,6 +72,26 @@ func New(source, typ string, payload any) (*Message, error) {
 	}, nil
 }
 
+// Validate checks that the message envelope has the required fields.
+func (m *Message) Validate() error {
+	if m.Version == "" {
+		return fmt.Errorf("message: missing version")
+	}
+	if m.ID == "" {
+		return fmt.Errorf("message: missing id")
+	}
+	if m.Source == "" {
+		return fmt.Errorf("message: missing source")
+	}
+	if m.Type == "" {
+		return fmt.Errorf("message: missing type")
+	}
+	if len(m.Payload) > MaxMessageSize {
+		return fmt.Errorf("message: payload too large: %d bytes", len(m.Payload))
+	}
+	return nil
+}
+
 // Decode unmarshals the payload into the given value.
 func (m *Message) Decode(v any) error {
 	return json.Unmarshal(m.Payload, v)
@@ -78,9 +103,16 @@ func (m *Message) Marshal() ([]byte, error) {
 }
 
 // Unmarshal deserializes a message from JSON bytes.
+// Returns an error if the data exceeds MaxMessageSize.
 func Unmarshal(data []byte) (*Message, error) {
+	if len(data) > MaxMessageSize {
+		return nil, fmt.Errorf("message too large: %d bytes (max %d)", len(data), MaxMessageSize)
+	}
 	var m Message
 	if err := json.Unmarshal(data, &m); err != nil {
+		return nil, err
+	}
+	if err := m.Validate(); err != nil {
 		return nil, err
 	}
 	return &m, nil
@@ -88,6 +120,8 @@ func Unmarshal(data []byte) (*Message, error) {
 
 func newID() string {
 	b := make([]byte, 16)
-	rand.Read(b)
+	if _, err := rand.Read(b); err != nil {
+		panic("mist: crypto/rand failed: " + err.Error())
+	}
 	return hex.EncodeToString(b)
 }

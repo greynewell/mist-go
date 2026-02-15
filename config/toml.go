@@ -107,6 +107,9 @@ func parseValue(raw string, lineNum int) (any, error) {
 	}
 
 	raw = stripInlineComment(raw)
+	if raw == "" {
+		return "", nil
+	}
 
 	if raw[0] == '"' {
 		return parseQuotedString(raw, lineNum)
@@ -172,8 +175,12 @@ func parseLiteralString(raw string, lineNum int) (string, error) {
 	return raw[1 : len(raw)-1], nil
 }
 
+// maxArrayElements limits the number of elements in a parsed TOML array
+// to prevent resource exhaustion from malicious input.
+const maxArrayElements = 10000
+
 func parseArray(raw string, lineNum int) ([]any, error) {
-	if raw[len(raw)-1] != ']' {
+	if len(raw) < 2 || raw[len(raw)-1] != ']' {
 		return nil, fmt.Errorf("line %d: unterminated array", lineNum)
 	}
 	inner := strings.TrimSpace(raw[1 : len(raw)-1])
@@ -186,6 +193,9 @@ func parseArray(raw string, lineNum int) ([]any, error) {
 		elem = strings.TrimSpace(elem)
 		if elem == "" {
 			continue
+		}
+		if len(result) >= maxArrayElements {
+			return nil, fmt.Errorf("line %d: array exceeds maximum %d elements", lineNum, maxArrayElements)
 		}
 		val, err := parseValue(elem, lineNum)
 		if err != nil {

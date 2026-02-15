@@ -18,6 +18,7 @@
 package checkpoint
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -58,12 +59,34 @@ type Tracker struct {
 	results   map[string]any
 }
 
+// ValidRunID reports whether a run ID contains only safe characters
+// (alphanumeric, hyphen, underscore) and is non-empty.
+func ValidRunID(id string) bool {
+	if id == "" || len(id) > 255 {
+		return false
+	}
+	for _, ch := range id {
+		if !((ch >= 'a' && ch <= 'z') ||
+			(ch >= 'A' && ch <= 'Z') ||
+			(ch >= '0' && ch <= '9') ||
+			ch == '-' || ch == '_') {
+			return false
+		}
+	}
+	return true
+}
+
 // Open creates or resumes a checkpoint tracker. The dir is the base directory
 // for checkpoint files. The runID uniquely identifies this job execution —
 // reusing the same runID resumes from the last successful step.
+// The runID must contain only alphanumeric characters, hyphens, and underscores.
 func Open(dir, runID string) (*Tracker, error) {
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		return nil, fmt.Errorf("checkpoint: mkdir %s: %w", dir, err)
+	if !ValidRunID(runID) {
+		return nil, fmt.Errorf("checkpoint: invalid runID %q: must be alphanumeric, hyphens, underscores only", runID)
+	}
+
+	if err := os.MkdirAll(dir, 0o700); err != nil {
+		return nil, fmt.Errorf("checkpoint: mkdir: %w", err)
 	}
 
 	path := filepath.Join(dir, runID+".jsonl")
@@ -79,7 +102,7 @@ func Open(dir, runID string) (*Tracker, error) {
 		t.replay(data)
 	}
 
-	f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+	f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
 		return nil, fmt.Errorf("checkpoint: open %s: %w", path, err)
 	}
@@ -90,11 +113,13 @@ func Open(dir, runID string) (*Tracker, error) {
 
 // replay parses existing checkpoint records and rebuilds state.
 func (t *Tracker) replay(data []byte) {
-	dec := json.NewDecoder(jsonlReader(data))
+	dec := json.NewDecoder(bytes.NewReader(data))
 	for dec.More() {
 		var r Record
 		if err := dec.Decode(&r); err != nil {
-			continue // skip corrupted lines
+			// Skip the rest on a corrupted line — we can't reliably
+			// find the next valid JSON object boundary.
+			return
 		}
 		switch r.Status {
 		case StatusCompleted:
@@ -288,22 +313,3 @@ func (t *Tracker) append(r Record) {
 	t.file.Sync() // fsync for durability
 }
 
-// jsonlReader wraps raw bytes for use with json.Decoder so it handles
-// newline-delimited JSON.
-type jsonlReaderType struct {
-	data []byte
-	pos  int
-}
-
-func jsonlReader(data []byte) *jsonlReaderType {
-	return &jsonlReaderType{data: data}
-}
-
-func (r *jsonlReaderType) Read(p []byte) (int, error) {
-	if r.pos >= len(r.data) {
-		return 0, fmt.Errorf("EOF")
-	}
-	n := copy(p, r.data[r.pos:])
-	r.pos += n
-	return n, nil
-}

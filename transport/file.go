@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sync"
 
 	"github.com/greynewell/mist-go/protocol"
@@ -23,8 +24,13 @@ type File struct {
 
 // NewFile creates a file transport for the given path. The file is
 // opened for appending (send) and reading (receive).
+// The path is resolved to an absolute path and validated.
 func NewFile(path string) (*File, error) {
-	return &File{path: path}, nil
+	abs, err := filepath.Abs(path)
+	if err != nil {
+		return nil, fmt.Errorf("file transport: invalid path: %w", err)
+	}
+	return &File{path: abs}, nil
 }
 
 // Send appends a JSON-encoded message as a single line to the file.
@@ -33,7 +39,7 @@ func (f *File) Send(_ context.Context, msg *protocol.Message) error {
 	defer f.mu.Unlock()
 
 	if f.writer == nil {
-		w, err := os.OpenFile(f.path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+		w, err := os.OpenFile(f.path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
 		if err != nil {
 			return fmt.Errorf("file transport: %w", err)
 		}

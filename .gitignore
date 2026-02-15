@@ -6,3 +6,18 @@ dist/
 *.test
 *.out
 .DS_Store
+
+# Built binary
+/mist
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

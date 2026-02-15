@@ -1,0 +1,38 @@
+{
+  "name": "@mist-stack/sdk",
+  "version": "0.0.1",
+  "description": "TypeScript SDK for the MIST stack (MatchSpec, InferMux, SchemaFlux, TokenTrace)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test dist/**/*.test.js"
+  },
+  "keywords": [
+    "mist",
+    "matchspec",
+    "infermux",
+    "schemaflux",
+    "tokentrace",
+    "ai",
+    "evaluation",
+    "inference"
+  ],
+  "author": "Grey Newell",
+  "license": "MIT",
+  "homepage": "https://miststack.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/greynewell/mist-go"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

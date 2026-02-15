@@ -1,0 +1,26 @@
+# SchemaFlux documentation site configuration.
+# This file tells SchemaFlux how to compile the docs/ directory into
+# a static site for miststack.dev (or local preview).
+
+title = "MIST Go SDK"
+description = "Shared library for the MIST stack: MatchSpec, InferMux, SchemaFlux, TokenTrace"
+base_url = "https://miststack.dev/docs/mist-go"
+output_dir = "_site"
+
+[site]
+author = "Grey Newell"
+repo = "https://github.com/greynewell/mist-go"
+
+[entities]
+source = "entities"
+format = "markdown"
+
+[nav]
+items = [
+    "getting-started",
+    "protocol",
+    "transports",
+    "parallel",
+    "bindings",
+    "configuration",
+]

@@ -1,0 +1,9 @@
+.git
+.github
+bindings
+docs
+**/*_test.go
+**/__pycache__
+**/node_modules
+*.md
+LICENSE

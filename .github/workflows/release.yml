@@ -36,15 +36,18 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
+          VERSION="${GITHUB_REF_NAME}"
           EXT=""
           if [ "$GOOS" = "windows" ]; then EXT=".exe"; fi
-          OUTPUT="mist-go-${GOOS}-${GOARCH}${EXT}"
-          go build -trimpath -ldflags="-s -w" -o "${OUTPUT}" ./...
+          OUTPUT="mist-${GOOS}-${GOARCH}${EXT}"
+          CGO_ENABLED=0 go build -trimpath \
+            -ldflags="-s -w -X main.version=${VERSION}" \
+            -o "${OUTPUT}" ./cmd/mist
           tar czf "${OUTPUT}.tar.gz" "${OUTPUT}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: mist-go-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: mist-${{ matrix.goos }}-${{ matrix.goarch }}
           path: "*.tar.gz"
 
   release:
@@ -67,12 +70,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v4
-        with:
-          name: mist-go-linux-amd64
+      - uses: docker/setup-qemu-action@v3
 
-      - name: Extract binary
-        run: tar xzf mist-go-linux-amd64.tar.gz
+      - uses: docker/setup-buildx-action@v3
 
       - uses: docker/login-action@v3
         with:
@@ -80,10 +80,31 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: docker/login-action@v3
+        if: secrets.DOCKERHUB_USERNAME != ''
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+            ${{ secrets.DOCKERHUB_USERNAME && format('docker.io/{0}/mist', secrets.DOCKERHUB_USERNAME) || '' }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
+
       - uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-            ghcr.io/${{ github.repository }}:latest
+          platforms: linux/amd64,linux/arm64
+          build-args: VERSION=${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

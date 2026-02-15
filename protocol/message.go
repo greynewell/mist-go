@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"hash/crc32"
 	"time"
 )
 
@@ -54,6 +55,7 @@ type Message struct {
 	Type        string          `json:"type"`
 	TimestampNS int64           `json:"timestamp_ns"`
 	Payload     json.RawMessage `json:"payload"`
+	Checksum    uint32          `json:"checksum,omitempty"`
 }
 
 // New creates a message with a random ID and current timestamp.
@@ -97,8 +99,29 @@ func (m *Message) Decode(v any) error {
 	return json.Unmarshal(m.Payload, v)
 }
 
+// ComputeChecksum sets the CRC32 checksum based on the current payload.
+// Call this before Marshal to include integrity verification.
+func (m *Message) ComputeChecksum() {
+	m.Checksum = crc32.ChecksumIEEE(m.Payload)
+}
+
+// VerifyChecksum returns true if the checksum is valid or absent (zero).
+// A zero checksum means integrity checking was not enabled for this message.
+func (m *Message) VerifyChecksum() bool {
+	if m.Checksum == 0 {
+		return true // not set, skip check
+	}
+	return m.Checksum == crc32.ChecksumIEEE(m.Payload)
+}
+
 // Marshal serializes the message to JSON bytes.
 func (m *Message) Marshal() ([]byte, error) {
+	return json.Marshal(m)
+}
+
+// MarshalWithChecksum computes the checksum and serializes the message.
+func (m *Message) MarshalWithChecksum() ([]byte, error) {
+	m.ComputeChecksum()
 	return json.Marshal(m)
 }
 

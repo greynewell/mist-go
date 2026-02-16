@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/greynewell/mist-go/protocol"
-	"github.com/greynewell/mist-go/trace"
 	"github.com/greynewell/mist-go/tokentrace"
+	"github.com/greynewell/mist-go/trace"
 )
 
 // Router routes inference requests to the appropriate provider and

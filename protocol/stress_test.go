@@ -54,11 +54,11 @@ func TestStressConcurrentMessageCreation(t *testing.T) {
 // TestStressLargePayload tests marshal/unmarshal with payloads approaching 1MB.
 func TestStressLargePayload(t *testing.T) {
 	sizes := []int{
-		1 * 1024,       // 1KB
-		64 * 1024,      // 64KB
-		256 * 1024,     // 256KB
-		512 * 1024,     // 512KB
-		1024 * 1024,    // 1MB
+		1 * 1024,    // 1KB
+		64 * 1024,   // 64KB
+		256 * 1024,  // 256KB
+		512 * 1024,  // 512KB
+		1024 * 1024, // 1MB
 	}
 
 	for _, size := range sizes {

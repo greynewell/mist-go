@@ -64,8 +64,8 @@ func (l *Limiter) TryAcquire() bool {
 // Release returns one slot to the limiter. Must be called after Acquire
 // or a successful TryAcquire.
 func (l *Limiter) Release() {
-	<-l.sem
 	l.active.Add(-1)
+	<-l.sem
 }
 
 // Active returns the number of currently held slots.

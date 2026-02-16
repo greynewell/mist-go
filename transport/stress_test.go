@@ -119,8 +119,8 @@ func TestStressChannelPairBidirectional(t *testing.T) {
 	wg.Add(4)
 	go send(a, "A", messagesEachWay)
 	go send(b, "B", messagesEachWay)
-	go recv(a, messagesEachWay)  // A receives what B sent
-	go recv(b, messagesEachWay)  // B receives what A sent
+	go recv(a, messagesEachWay) // A receives what B sent
+	go recv(b, messagesEachWay) // B receives what A sent
 
 	wg.Wait()
 }

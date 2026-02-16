@@ -12,17 +12,17 @@ import (
 
 // Standard error codes used across all MIST tools.
 const (
-	CodeInternal    = "internal"     // unexpected failure
-	CodeTimeout     = "timeout"      // operation timed out
-	CodeCancelled   = "cancelled"    // context was cancelled
-	CodeTransport   = "transport"    // send/receive failure
-	CodeProtocol    = "protocol"     // malformed message or envelope
-	CodeValidation  = "validation"   // invalid input or config
-	CodeNotFound    = "not_found"    // resource does not exist
-	CodeUnavailable = "unavailable"  // service is down or unreachable
-	CodeRateLimit   = "rate_limit"   // too many requests
-	CodeAuth        = "auth"         // authentication or authorization failure
-	CodeConflict    = "conflict"     // resource conflict or version mismatch
+	CodeInternal    = "internal"    // unexpected failure
+	CodeTimeout     = "timeout"     // operation timed out
+	CodeCancelled   = "cancelled"   // context was cancelled
+	CodeTransport   = "transport"   // send/receive failure
+	CodeProtocol    = "protocol"    // malformed message or envelope
+	CodeValidation  = "validation"  // invalid input or config
+	CodeNotFound    = "not_found"   // resource does not exist
+	CodeUnavailable = "unavailable" // service is down or unreachable
+	CodeRateLimit   = "rate_limit"  // too many requests
+	CodeAuth        = "auth"        // authentication or authorization failure
+	CodeConflict    = "conflict"    // resource conflict or version mismatch
 )
 
 // Error is a structured error that carries a code, message, causal chain,

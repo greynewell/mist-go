@@ -63,11 +63,11 @@ debug = true`)
 		}
 
 		type Config struct {
-			Name    string   `toml:"name"`
-			Port    int64    `toml:"port"`
-			Debug   bool     `toml:"debug"`
-			Rate    float64  `toml:"rate"`
-			Tags    []string `toml:"tags"`
+			Name  string   `toml:"name"`
+			Port  int64    `toml:"port"`
+			Debug bool     `toml:"debug"`
+			Rate  float64  `toml:"rate"`
+			Tags  []string `toml:"tags"`
 		}
 
 		var cfg Config

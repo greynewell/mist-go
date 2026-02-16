@@ -14,10 +14,10 @@ func TestValidIDRejectsControlChars(t *testing.T) {
 		{"abc-def_ghi.jkl", true},
 		{"hex0123456789abcdef", true},
 		{"", false},
-		{"a\nb", false},      // newline — log injection
-		{"a\rb", false},      // carriage return — log injection
-		{"a\x00b", false},    // null byte
-		{"a\tb", false},      // tab
+		{"a\nb", false},                    // newline — log injection
+		{"a\rb", false},                    // carriage return — log injection
+		{"a\x00b", false},                  // null byte
+		{"a\tb", false},                    // tab
 		{string(make([]byte, 300)), false}, // too long
 	}
 

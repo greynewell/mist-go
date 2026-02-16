@@ -177,7 +177,7 @@ func TestStressOpenRejectionPerformance(t *testing.T) {
 
 	// Should be very fast — no function calls, just state check.
 	nsPerOp := elapsed.Nanoseconds() / n
-	if nsPerOp > 1000 { // 1µs per rejection is too slow
+	if nsPerOp > 3000 { // CI runners with -race are slower
 		t.Errorf("rejection too slow: %dns/op", nsPerOp)
 	}
 }

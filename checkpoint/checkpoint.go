@@ -312,4 +312,3 @@ func (t *Tracker) append(r Record) {
 	t.file.Write(data)
 	t.file.Sync() // fsync for durability
 }
-

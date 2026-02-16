@@ -90,7 +90,7 @@ func (h *Handler) Traces(w http.ResponseWriter, r *http.Request) {
 
 // TraceResponse is the JSON body for GET /traces/{id}.
 type TraceResponse struct {
-	TraceID string                `json:"trace_id"`
+	TraceID string               `json:"trace_id"`
 	Spans   []protocol.TraceSpan `json:"spans"`
 }
 

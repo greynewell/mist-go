@@ -10,18 +10,18 @@ import (
 
 // Config holds all settings for a TokenTrace instance.
 type Config struct {
-	Addr           string        `toml:"addr"`
-	MaxSpans       int           `toml:"max_spans"`
-	AlertCooldown  time.Duration `toml:"alert_cooldown"`
-	AlertRules     []AlertRule   `toml:"alert_rules"`
+	Addr          string        `toml:"addr"`
+	MaxSpans      int           `toml:"max_spans"`
+	AlertCooldown time.Duration `toml:"alert_cooldown"`
+	AlertRules    []AlertRule   `toml:"alert_rules"`
 }
 
 // AlertRule defines a threshold that triggers an alert.
 type AlertRule struct {
-	Metric    string  `toml:"metric"`    // e.g. "latency_p99", "error_rate", "cost_hourly"
-	Op        string  `toml:"op"`        // ">" or "<"
+	Metric    string  `toml:"metric"` // e.g. "latency_p99", "error_rate", "cost_hourly"
+	Op        string  `toml:"op"`     // ">" or "<"
 	Threshold float64 `toml:"threshold"`
-	Level     string  `toml:"level"`     // "warning" or "critical"
+	Level     string  `toml:"level"` // "warning" or "critical"
 }
 
 // DefaultConfig returns a Config with sensible defaults.

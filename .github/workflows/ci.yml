@@ -81,4 +81,5 @@ jobs:
       - name: Install and test
         run: |
           pip install -e .
+          pip install pytest
           python -m pytest tests/ -v

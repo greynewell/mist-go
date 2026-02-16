@@ -37,7 +37,7 @@ func NewEchoProvider(name string, models []string, delay time.Duration) *EchoPro
 	return &EchoProvider{name: name, models: models, delay: delay}
 }
 
-func (e *EchoProvider) Name() string    { return e.name }
+func (e *EchoProvider) Name() string     { return e.name }
 func (e *EchoProvider) Models() []string { return e.models }
 
 func (e *EchoProvider) Infer(ctx context.Context, req protocol.InferRequest) (protocol.InferResponse, error) {

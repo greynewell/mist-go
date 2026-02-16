@@ -16,9 +16,9 @@ type Aggregator struct {
 	registry *metrics.Registry
 	latency  *metrics.Histogram
 
-	totalSpans   atomic.Int64
-	errorCount   atomic.Int64
-	totalTokenIn atomic.Int64
+	totalSpans    atomic.Int64
+	errorCount    atomic.Int64
+	totalTokenIn  atomic.Int64
 	totalTokenOut atomic.Int64
 
 	// Cost accumulator (float64 stored atomically via mutex).
@@ -116,16 +116,16 @@ func (a *Aggregator) Stats() AggregatorStats {
 	a.opMu.Unlock()
 
 	return AggregatorStats{
-		TotalSpans:    total,
-		ErrorCount:    errors,
-		ErrorRate:     errorRate,
-		LatencyP50:    snap.Percentile(50),
-		LatencyP99:    snap.Percentile(99),
-		LatencyAvg:    snap.Avg(),
-		TotalTokensIn: a.totalTokenIn.Load(),
+		TotalSpans:     total,
+		ErrorCount:     errors,
+		ErrorRate:      errorRate,
+		LatencyP50:     snap.Percentile(50),
+		LatencyP99:     snap.Percentile(99),
+		LatencyAvg:     snap.Avg(),
+		TotalTokensIn:  a.totalTokenIn.Load(),
 		TotalTokensOut: a.totalTokenOut.Load(),
-		TotalCostUSD:  cost,
-		ByOperation:   byOp,
+		TotalCostUSD:   cost,
+		ByOperation:    byOp,
 	}
 }
 
@@ -136,16 +136,16 @@ func (a *Aggregator) Registry() *metrics.Registry {
 
 // AggregatorStats is a point-in-time snapshot of all aggregated metrics.
 type AggregatorStats struct {
-	TotalSpans    int64                    `json:"total_spans"`
-	ErrorCount    int64                    `json:"error_count"`
-	ErrorRate     float64                  `json:"error_rate"`
-	LatencyP50    float64                  `json:"latency_p50_ms"`
-	LatencyP99    float64                  `json:"latency_p99_ms"`
-	LatencyAvg    float64                  `json:"latency_avg_ms"`
-	TotalTokensIn int64                   `json:"total_tokens_in"`
-	TotalTokensOut int64                  `json:"total_tokens_out"`
-	TotalCostUSD  float64                  `json:"total_cost_usd"`
-	ByOperation   map[string]OperationStats `json:"by_operation,omitempty"`
+	TotalSpans     int64                     `json:"total_spans"`
+	ErrorCount     int64                     `json:"error_count"`
+	ErrorRate      float64                   `json:"error_rate"`
+	LatencyP50     float64                   `json:"latency_p50_ms"`
+	LatencyP99     float64                   `json:"latency_p99_ms"`
+	LatencyAvg     float64                   `json:"latency_avg_ms"`
+	TotalTokensIn  int64                     `json:"total_tokens_in"`
+	TotalTokensOut int64                     `json:"total_tokens_out"`
+	TotalCostUSD   float64                   `json:"total_cost_usd"`
+	ByOperation    map[string]OperationStats `json:"by_operation,omitempty"`
 }
 
 // Metric returns the value for a named metric, for use by the alerter.

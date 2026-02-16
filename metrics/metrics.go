@@ -255,8 +255,8 @@ type GaugeSnapshot struct {
 type Histogram struct {
 	name    string
 	labels  []string
-	bounds  []float64       // sorted bucket boundaries
-	buckets []atomic.Int64  // raw counts per bucket
+	bounds  []float64      // sorted bucket boundaries
+	buckets []atomic.Int64 // raw counts per bucket
 	count   atomic.Int64
 	sum     atomic.Uint64 // stored as float64 bits
 	minBits atomic.Uint64 // stored as float64 bits
@@ -323,13 +323,13 @@ type HistogramSnapshot struct {
 // MarshalJSON implements custom JSON marshaling to handle float64 map keys.
 func (s HistogramSnapshot) MarshalJSON() ([]byte, error) {
 	type alias struct {
-		Name    string            `json:"name"`
-		Labels  []string          `json:"labels,omitempty"`
-		Count   int64             `json:"count"`
-		Sum     float64           `json:"sum"`
-		Min     float64           `json:"min"`
-		Max     float64           `json:"max"`
-		Buckets map[string]int64  `json:"buckets"`
+		Name    string           `json:"name"`
+		Labels  []string         `json:"labels,omitempty"`
+		Count   int64            `json:"count"`
+		Sum     float64          `json:"sum"`
+		Min     float64          `json:"min"`
+		Max     float64          `json:"max"`
+		Buckets map[string]int64 `json:"buckets"`
 	}
 	a := alias{
 		Name: s.Name, Labels: s.Labels,

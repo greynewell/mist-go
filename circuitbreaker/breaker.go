@@ -71,12 +71,12 @@ type Config struct {
 type Breaker struct {
 	cfg Config
 
-	mu           sync.Mutex
-	state        State
-	failures     int64
-	successes    int64
-	consecutFail int
-	openedAt     time.Time
+	mu               sync.Mutex
+	state            State
+	failures         int64
+	successes        int64
+	consecutFail     int
+	openedAt         time.Time
 	halfOpenInFlight int32
 }
 

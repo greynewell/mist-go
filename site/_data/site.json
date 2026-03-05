@@ -1,0 +1,39 @@
+{
+  "title": "MIST",
+  "description": "Eval-driven infrastructure for AI systems. MatchSpec, InferMux, SchemaFlux, TokenTrace.",
+  "url": "https://miststack.dev",
+  "repo": "https://github.com/greynewell/mist-go",
+  "author": "Grey Newell",
+  "authorUrl": "https://greynewell.com",
+  "methodology": "https://evaldriven.org",
+  "builtWith": [
+    {
+      "name": "swe-bench-fast",
+      "description": "SWE-bench eval harness with native ARM64 containers. 6.3x test runner speedup on Apple Silicon and AWS Graviton.",
+      "url": "https://github.com/greynewell/swe-bench-fast",
+      "post": "https://greynewell.com/blog/swe-bench-arm64-native-containers-6x-faster/"
+    }
+  ],
+  "tools": [
+    {
+      "name": "MatchSpec",
+      "description": "Define correctness as code. Run eval suites with statistical rigor. Gate deployments on passing thresholds.",
+      "url": "https://matchspec.dev"
+    },
+    {
+      "name": "InferMux",
+      "description": "Route inference requests across providers. Load balance, failover, and cost-optimize model calls.",
+      "url": "https://infermux.dev"
+    },
+    {
+      "name": "SchemaFlux",
+      "description": "Compile structured data from any source. Schema validation, entity extraction, batch processing.",
+      "url": "https://schemaflux.dev"
+    },
+    {
+      "name": "TokenTrace",
+      "description": "Trace every token. Track cost, latency, and quality across your entire AI stack. Alert on regressions.",
+      "url": "https://tokentrace.dev"
+    }
+  ]
+}

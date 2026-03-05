@@ -79,4 +79,10 @@ go test -fuzz=FuzzUnmarshal -fuzztime=30s ./protocol/
 go test -fuzz=FuzzParseTOML -fuzztime=30s ./config/
 ```
 
+## Built with MIST
+
+| Project | What |
+|---------|------|
+| [swe-bench-fast](https://github.com/greynewell/swe-bench-fast) | SWE-bench eval harness with native ARM64 containers. [6.3x speedup on Apple Silicon and Graviton.](https://greynewell.com/blog/swe-bench-arm64-native-containers-6x-faster/) |
+
 Architecture: [ARCHITECTURE.md](ARCHITECTURE.md)

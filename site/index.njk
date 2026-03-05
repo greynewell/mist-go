@@ -1,0 +1,55 @@
+---
+layout: base.njk
+title: See through the mist
+description: Eval-driven infrastructure for AI systems. MatchSpec, InferMux, SchemaFlux, TokenTrace.
+permalink: /
+---
+
+<div class="hero">
+  <h1>See through the mist.</h1>
+  <p class="tagline">Eval-driven infrastructure for AI systems.</p>
+  <div class="install"><code>go get github.com/greynewell/mist-go</code></div>
+</div>
+
+<h2 class="section-heading" id="use-cases">Use Cases</h2>
+<div class="card-grid">
+  <div class="card">
+    <h3><a href="/pillars/rl-environments/">RL Environments</a></h3>
+    <p>Reward hacking, reproducibility crises, and the debugging abyss. Why RL training fails and what's missing from the toolchain.</p>
+  </div>
+  <div class="card">
+    <h3><a href="/pillars/model-harnesses/">Model Harnesses</a></h3>
+    <p>Bad data, silent failures, and catastrophic forgetting. The real problems behind fine-tuning that tutorials skip.</p>
+  </div>
+  <div class="card">
+    <h3><a href="/pillars/ai-agents/">AI Agents</a></h3>
+    <p>Cascading errors, context rot, and agents that ignore instructions. What the benchmarks don't show about production agents.</p>
+  </div>
+</div>
+
+<h2 class="section-heading" id="built-with-mist">Built with MIST</h2>
+<div class="card-grid">
+  {% for project in site.builtWith %}
+  <div class="card">
+    <h3><a href="{{ project.url }}">{{ project.name }}</a></h3>
+    <p>{{ project.description }}</p>
+    {% if project.post %}<p class="card-link"><a href="{{ project.post }}">Read the writeup</a></p>{% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<h2 class="section-heading" id="challenges">Challenges</h2>
+<div class="card-grid">
+  <div class="card">
+    <h3><a href="/challenges/rl-environments/">Building Eval into RL Training</a></h3>
+    <p>Reward functions without tooling, episode debugging without traces, results that don't reproduce. The developer problems MIST addresses.</p>
+  </div>
+  <div class="card">
+    <h3><a href="/challenges/model-harnesses/">Evaluating Fine-Tuning Outcomes</a></h3>
+    <p>Vibes-based deployment, silent quality degradation, data problems masquerading as model problems. Where eval gates belong.</p>
+  </div>
+  <div class="card">
+    <h3><a href="/challenges/ai-agents/">Observing Agent Behavior at Every Step</a></h3>
+    <p>Cascading errors without visibility, untracked costs, monitoring that can't see LLM failures. What token-level tracing solves.</p>
+  </div>
+</div>

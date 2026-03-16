@@ -1,0 +1,50 @@
+---
+layout: tool-home.njk
+title: tokentrace
+tool: tokentrace
+tagline: "Trace every token."
+description: "tokentrace provides token-level observability for AI inference. Track cost, latency, and quality across your entire stack. Alert on regressions before users notice."
+language: Go
+status: stable
+githubUrl: "https://github.com/greynewell/tokentrace"
+installCmd: "go get github.com/greynewell/tokentrace"
+features:
+  - title: "Token-level traces"
+    description: "Every inference call emits a structured trace: model, provider, prompt tokens, completion tokens, cost, latency, and custom attributes."
+  - title: "Quality alerts"
+    description: "Alert on eval score drops, not just HTTP errors. Know when your model degrades before users do."
+  - title: "Cost tracking"
+    description: "Per-call cost accounting. Attribute spend by caller, model, and workflow. Set budgets and enforce them."
+  - title: "Transport-agnostic"
+    description: "Write traces to files in development, HTTP in production, stdout for debugging. Same API everywhere."
+  - title: "Prometheus + Grafana"
+    description: "Export metrics to Prometheus. Pre-built Grafana dashboard for AI system observability."
+  - title: "Zero dependencies"
+    description: "Built on mist-go. No collector, exporter, or background process required."
+terminalDemo: |
+  import "github.com/greynewell/tokentrace"
+
+  // Instrument an inference call
+  trace := tokentrace.Start("summarize-document")
+  resp, err := callModel(prompt)
+  trace.Record(tokentrace.Span{
+      Model:        "gpt-4o",
+      PromptTokens: resp.Usage.PromptTokens,
+      CompTokens:   resp.Usage.CompletionTokens,
+      LatencyMs:    elapsed.Milliseconds(),
+      Cost:         tokentrace.Cost("gpt-4o", resp.Usage),
+  })
+  trace.End()
+
+  # Query metrics
+  $ curl http://localhost:9090/metrics/cost?window=1h
+  {"total_usd": 0.42, "by_model": {"gpt-4o": 0.38, "gpt-4o-mini": 0.04}}
+---
+
+Traditional application performance monitoring tools were designed for deterministic systems. An HTTP 200 is success; anything else is failure. For conventional APIs, this model works. For AI inference, it breaks down completely. A language model can return HTTP 200 with a confident, fluent, entirely wrong answer. It can hallucinate facts, ignore constraints, and produce outputs that are correct syntactically and catastrophically wrong semantically — and none of that shows up in your request logs, error rates, or latency histograms.
+
+tokentrace closes this observability gap. It treats an inference call not as a black-box HTTP request but as a structured event with measurable properties: the model used, the number of tokens consumed, the cost incurred, the time elapsed, and — when paired with [matchspec](/matchspec/) eval scores — an estimate of output quality. Every call emits a `Span` that captures all of these dimensions. Spans are collected into traces for multi-step workflows, aggregated into metrics for dashboarding, and evaluated against alert rules for proactive notification when something regresses.
+
+The cost and latency dimensions are useful on their own — knowing that a single workflow costs $0.003 per call, or that p95 latency spiked to 4.2 seconds, is actionable information that standard APM tools cannot provide. But the most valuable dimension is quality. By attaching matchspec eval scores to spans as custom attributes, you can track quality as a first-class time-series metric alongside cost and latency. When your model provider updates a model, or when you change a prompt template, tokentrace shows you what moved — not just whether the endpoint is up.
+
+tokentrace is built on [mist-go](/mist-go/), the shared core library for the MIST stack, which provides the transport layer, batching, and retry logic. The transport is pluggable: during development, traces write to a local JSONL file for inspection; in production, they POST to an HTTP endpoint or a Prometheus-compatible collector; in tests, they go to an in-memory buffer that your test code can assert against. The HTTP API lets you query aggregated metrics — total cost, cost by model, latency percentiles, error rate — without standing up any additional infrastructure. If you already have a Prometheus/Grafana stack, tokentrace exports all metrics in the standard text format and ships a pre-built dashboard JSON that you can import and run immediately.

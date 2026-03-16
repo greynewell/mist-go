@@ -1,0 +1,44 @@
+---
+layout: tutorials-index.njk
+tool: schemaflux
+description: "Step-by-step tutorials for schemaflux. Build a static site from markdown, compile eval datasets for matchspec, and write custom output backends."
+---
+
+<a href="/schemaflux/tutorials/first-site/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Building a Static Site</h3>
+    <span class="tutorial-time">15 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">beginner</span>
+    <span class="tutorial-tag">HTML backend</span>
+    <span class="tutorial-tag">templates</span>
+  </div>
+  <p>Create a content directory, write a schemaflux.yml config, define a layout template, and build a complete static site with taxonomy pages and a search index.</p>
+</a>
+
+<a href="/schemaflux/tutorials/eval-dataset/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Compiling an Eval Dataset</h3>
+    <span class="tutorial-time">20 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">intermediate</span>
+    <span class="tutorial-tag">JSON backend</span>
+    <span class="tutorial-tag">matchspec</span>
+  </div>
+  <p>Annotate markdown files with evaluation frontmatter, run them through the schemaflux pipeline, and produce a structured JSON dataset ready for use with matchspec.</p>
+</a>
+
+<a href="/schemaflux/tutorials/custom-backend/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Writing a Custom Backend</h3>
+    <span class="tutorial-time">25 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">advanced</span>
+    <span class="tutorial-tag">Go API</span>
+    <span class="tutorial-tag">backends</span>
+  </div>
+  <p>Implement the Backend interface in Go to emit any output format from the compiled IR. Walk through a working example that produces a JSONL file per taxonomy tag.</p>
+</a>

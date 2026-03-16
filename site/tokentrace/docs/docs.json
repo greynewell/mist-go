@@ -1,0 +1,41 @@
+{
+  "templateEngineOverride": "md",
+  "layout": "docs-layout.njk",
+  "tool": "tokentrace",
+  "docPage": true,
+  "nav": [
+    {
+      "section": "Getting Started",
+      "pages": [
+        { "slug": "overview",     "title": "Overview",    "desc": "What tokentrace traces and why it matters." },
+        { "slug": "quick-start",  "title": "Quick Start", "desc": "Instrument your first inference call in five minutes." },
+        { "slug": "installation", "title": "Installation","desc": "Install the Go package." }
+      ]
+    },
+    {
+      "section": "Core Concepts",
+      "pages": [
+        { "slug": "traces",       "title": "Traces & Spans",     "desc": "The trace model: spans, attributes, and hierarchy." },
+        { "slug": "metrics",      "title": "Metrics",            "desc": "Cost, latency, quality, and custom metrics." },
+        { "slug": "transports",   "title": "Transports",         "desc": "Write traces to files, HTTP endpoints, or stdout." },
+        { "slug": "alerts",       "title": "Alerts",             "desc": "Alert rules for quality, cost, and latency regressions." }
+      ]
+    },
+    {
+      "section": "Reference",
+      "pages": [
+        { "slug": "metrics-reference","title": "Metrics Reference","desc": "Every built-in metric: type, unit, and description." },
+        { "slug": "http-api",     "title": "HTTP API",           "desc": "Ingest traces and query metrics over HTTP." },
+        { "slug": "config",       "title": "Configuration",      "desc": "tokentrace.yml schema and defaults." },
+        { "slug": "go-api",       "title": "Go API",             "desc": "Instrument Go code directly." }
+      ]
+    },
+    {
+      "section": "Guides",
+      "pages": [
+        { "slug": "agent-instrumentation","title": "Instrumenting an Agent Loop","desc": "Add step-level tracing to a multi-step agent." },
+        { "slug": "grafana",      "title": "Grafana Integration",               "desc": "Export metrics to Prometheus and build Grafana dashboards." }
+      ]
+    }
+  ]
+}

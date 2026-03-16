@@ -1,0 +1,40 @@
+{
+  "templateEngineOverride": "md",
+  "layout": "docs-layout.njk",
+  "tool": "schemaflux",
+  "docPage": true,
+  "nav": [
+    {
+      "section": "Getting Started",
+      "pages": [
+        { "slug": "overview",     "title": "Overview",    "desc": "What schemaflux compiles and why." },
+        { "slug": "quick-start",  "title": "Quick Start", "desc": "Compile your first dataset in five minutes." },
+        { "slug": "installation", "title": "Installation","desc": "Install the schemaflux binary." }
+      ]
+    },
+    {
+      "section": "Core Concepts",
+      "pages": [
+        { "slug": "ir",           "title": "Intermediate Representation", "desc": "The IR that passes transform from input to output." },
+        { "slug": "passes",       "title": "The 12 Passes",               "desc": "Every compiler pass: what it does and when it runs." },
+        { "slug": "backends",     "title": "Output Backends",              "desc": "HTML, JSON, RSS, sitemap, search index, and custom." }
+      ]
+    },
+    {
+      "section": "Reference",
+      "pages": [
+        { "slug": "config",       "title": "Configuration",    "desc": "schemaflux.yml schema, all options." },
+        { "slug": "frontmatter",  "title": "Frontmatter",      "desc": "Supported YAML frontmatter keys and types." },
+        { "slug": "templates",    "title": "Template Engine",  "desc": "Template syntax, variables, and built-in filters." },
+        { "slug": "cli",          "title": "CLI Reference",    "desc": "Commands, flags, and exit codes." }
+      ]
+    },
+    {
+      "section": "Guides",
+      "pages": [
+        { "slug": "static-site",  "title": "Building a Static Site",       "desc": "Use schemaflux as a full static site generator." },
+        { "slug": "eval-datasets","title": "Compiling Eval Datasets",       "desc": "Compile annotated markdown into structured eval inputs." }
+      ]
+    }
+  ]
+}

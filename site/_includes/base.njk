@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}{% if title != site.title %} — {{ site.title }}{% endif %}</title>
+  <meta name="description" content="{{ description or site.description }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  {% include "shared-css.njk" %}
+  <style>
+    main { padding: 3rem 0; }
+    article { max-width: 48rem; }
+    article h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .article-meta { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  </style>
+</head>
+<body>
+  {% include "nav.njk" %}
+  <main>
+    <div class="container">
+      {{ content | safe }}
+    </div>
+  </main>
+  {% include "footer.njk" %}
+  <script>
+    // Terminal colorization
+    document.querySelectorAll('.terminal-body').forEach(function(el) {
+      el.innerHTML = el.textContent.split('\n').map(function(line) {
+        var t = line.trimStart();
+        if (t.startsWith('#')) return '<span style="color:#6a9955">' + line + '</span>';
+        if (t.startsWith('$') || t.startsWith('>')) return '<span style="color:#4ec9b0">' + line + '</span>';
+        if (/error|Error|FAIL|fatal/i.test(line)) return '<span style="color:#f48771">' + line + '</span>';
+        if (/\bok\b|PASS|✓|success|done/i.test(line)) return '<span style="color:#4ec9b0">' + line + '</span>';
+        return line;
+      }).join('\n');
+    });
+  </script>
+</body>
+</html>

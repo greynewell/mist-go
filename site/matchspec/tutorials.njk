@@ -1,0 +1,44 @@
+---
+layout: tutorials-index.njk
+tool: matchspec
+description: "Step-by-step tutorials for matchspec. Learn how to write your first eval suite, gate deployments in CI, and build custom graders for domain-specific correctness."
+---
+
+<a href="./tutorials/first-eval/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Run Your First Eval Suite</h3>
+    <span class="tutorial-time">10 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">beginner</span>
+    <span class="tutorial-tag">datasets</span>
+    <span class="tutorial-tag">graders</span>
+  </div>
+  <p>Write a dataset for a summarization task, wire up an exact_match grader, run matchspec run, and interpret the results. Full working Go code included.</p>
+</a>
+
+<a href="./tutorials/ci-cd-gate/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Gate Deployments with matchspec</h3>
+    <span class="tutorial-time">20 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">intermediate</span>
+    <span class="tutorial-tag">ci/cd</span>
+    <span class="tutorial-tag">github actions</span>
+  </div>
+  <p>Set up a full GitHub Actions workflow that runs your eval suite on every pull request, fails the build when pass rate drops below threshold, and posts results as a PR comment.</p>
+</a>
+
+<a href="./tutorials/custom-grader/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Write a Custom Grader</h3>
+    <span class="tutorial-time">15 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">intermediate</span>
+    <span class="tutorial-tag">graders</span>
+    <span class="tutorial-tag">go api</span>
+  </div>
+  <p>Implement the Grader interface to score model outputs against domain-specific rules. Learn how to test graders in isolation and register them for use in YAML config.</p>
+</a>

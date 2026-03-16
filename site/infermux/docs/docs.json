@@ -1,0 +1,41 @@
+{
+  "templateEngineOverride": "md",
+  "layout": "docs-layout.njk",
+  "tool": "infermux",
+  "docPage": true,
+  "nav": [
+    {
+      "section": "Getting Started",
+      "pages": [
+        { "slug": "overview",      "title": "Overview",    "desc": "What infermux is and what problems it solves." },
+        { "slug": "quick-start",   "title": "Quick Start", "desc": "Route your first inference request in five minutes." },
+        { "slug": "installation",  "title": "Installation","desc": "Install the CLI and Go package." }
+      ]
+    },
+    {
+      "section": "Core Concepts",
+      "pages": [
+        { "slug": "providers",     "title": "Providers",          "desc": "Configure model providers: OpenAI, Anthropic, Ollama, and more." },
+        { "slug": "routing",       "title": "Routing",            "desc": "How infermux selects a provider for each request." },
+        { "slug": "circuit-breaking","title": "Circuit Breaking", "desc": "Automatic failover and recovery from provider failures." },
+        { "slug": "cost-tracking", "title": "Cost Tracking",      "desc": "Per-request token accounting and spend attribution." }
+      ]
+    },
+    {
+      "section": "Reference",
+      "pages": [
+        { "slug": "cli",           "title": "CLI Reference",  "desc": "All commands and flags." },
+        { "slug": "http-api",      "title": "HTTP API",       "desc": "Drop-in OpenAI-compatible HTTP API." },
+        { "slug": "config",        "title": "Configuration",  "desc": "infermux.yml schema and defaults." },
+        { "slug": "go-api",        "title": "Go API",         "desc": "Programmatic router and provider registration." }
+      ]
+    },
+    {
+      "section": "Guides",
+      "pages": [
+        { "slug": "provider-setup",   "title": "Provider Setup",      "desc": "Configure each supported provider with credentials and limits." },
+        { "slug": "cost-optimization","title": "Cost Optimization",   "desc": "Route by cost, set spend caps, and track attribution." }
+      ]
+    }
+  ]
+}

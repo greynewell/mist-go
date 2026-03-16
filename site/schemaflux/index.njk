@@ -1,0 +1,52 @@
+---
+layout: tool-home.njk
+title: schemaflux
+tool: schemaflux
+tagline: "Compile structured data from anything."
+description: "schemaflux compiles markdown and frontmatter through a 12-pass IR pipeline into typed output: HTML, JSON, RSS, sitemaps, and search indexes."
+language: Go
+status: stable
+githubUrl: "https://github.com/greynewell/schemaflux"
+installCmd: "go install github.com/greynewell/schemaflux/cmd/schemaflux@latest"
+features:
+  - title: "12-pass compiler"
+    description: "Parse → slug → sort → enrich → taxonomy → relationships → graph → URL resolve → schema → validate → emit. Each pass is composable."
+  - title: "Multiple backends"
+    description: "HTML (with templates), JSON, RSS, XML sitemaps, search indexes, and custom backends via the Go API."
+  - title: "Template engine"
+    description: "Go templates with access to the full IR graph. Cross-document relationships, backlinks, and taxonomy pages generated automatically."
+  - title: "Eval dataset compilation"
+    description: "Compile annotated markdown into structured eval input datasets for matchspec."
+  - title: "Sub-second builds"
+    description: "~2,000 entities compiled to ~2,300 pages in under 500ms. Incremental builds coming."
+  - title: "Zero dependencies"
+    description: "Single static binary. Built on mist-go with no runtime requirements."
+terminalDemo: |
+  $ schemaflux build --config schemaflux.yml
+
+  parsing   342 files
+  pass 1/12 slugify
+  pass 2/12 sort
+  pass 3/12 enrich
+  pass 4/12 taxonomy
+  pass 5/12 relationships
+  pass 6/12 graph
+  pass 7/12 url-resolve
+  pass 8/12 schema-gen
+  pass 9/12 validate
+  pass 10/12 emit-html
+  pass 11/12 emit-json
+  pass 12/12 emit-sitemap
+
+  output    412 files in _site/
+  built in  487ms
+---
+
+Most static site generators work by mapping files to pages. You give them a markdown file, they apply a template, and they write an HTML file. That model is fine for simple blogs, but it breaks down as soon as your content has structure — when documents reference each other, when you want taxonomy pages derived from tags, when pages depend on computed relationships, or when the same source data needs to produce both a website and a machine-readable JSON feed for downstream tooling. At that point you are fighting the tool rather than using it.
+
+schemaflux takes a different approach. Instead of rendering files directly, it parses all your source documents into an in-memory **intermediate representation** — a typed graph of entities with fields, tags, relationships, and metadata. It then runs that graph through a 12-pass compiler pipeline that progressively enriches it: generating slugs, computing sort order, inferring taxonomy groupings, scoring cross-document relationships, resolving URLs, and validating the result against an inferred schema. Only after the pipeline is complete does it hand the enriched graph to one or more output backends, which emit HTML pages, JSON feeds, RSS, sitemaps, and search indexes.
+
+The IR is what makes the difference. Because every document is part of a shared graph before any output is written, templates can traverse relationships that don't exist in the raw source files — a blog post template can render a list of related posts that was computed by the relationship-scoring pass, a tag page can list every post with that tag without any special configuration, and a search index can be built from the same structured data that drives the HTML. The pipeline is also the right place to enforce invariants: the validation pass runs before emission, so a missing required field or a broken internal link fails the build rather than silently producing broken output.
+
+schemaflux ships with two bundled tools built on the same pipeline: `pssg` (personal static site generator), the tool that builds evaldriven.org; and `graph2md`, which exports the compiled IR as a directory of markdown files with enriched frontmatter. The Go API exposes the full pipeline so you can write custom passes and custom backends without forking the compiler.
+

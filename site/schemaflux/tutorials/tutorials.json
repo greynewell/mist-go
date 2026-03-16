@@ -1,0 +1,5 @@
+{
+  "templateEngineOverride": "md",
+  "layout": "tutorial-layout.njk",
+  "tool": "schemaflux"
+}

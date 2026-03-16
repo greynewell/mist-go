@@ -5,7 +5,6 @@
   "repo": "https://github.com/greynewell/mist-go",
   "author": "Grey Newell",
   "authorUrl": "https://greynewell.com",
-  "methodology": "https://evaldriven.org",
   "builtWith": [
     {
       "name": "swe-bench-fast",
@@ -16,24 +15,83 @@
   ],
   "tools": [
     {
-      "name": "MatchSpec",
-      "description": "Define correctness as code. Run eval suites with statistical rigor. Gate deployments on passing thresholds.",
-      "url": "https://matchspec.dev"
+      "name": "matchspec",
+      "tagline": "Define correctness as code.",
+      "description": "Eval framework for AI systems. Define datasets, write graders, run suites, gate deployments on passing thresholds.",
+      "url": "/matchspec/",
+      "docsUrl": "/matchspec/docs/",
+      "tutorialsUrl": "/matchspec/tutorials/",
+      "githubUrl": "https://github.com/greynewell/matchspec",
+      "installCmd": "go get github.com/greynewell/matchspec",
+      "language": "Go",
+      "status": "stable"
     },
     {
-      "name": "InferMux",
-      "description": "Route inference requests across providers. Load balance, failover, and cost-optimize model calls.",
-      "url": "https://infermux.dev"
+      "name": "infermux",
+      "tagline": "Route inference. Survive failure.",
+      "description": "Inference router for AI systems. Load balance across providers, fail over automatically, cost-optimize model calls.",
+      "url": "/infermux/",
+      "docsUrl": "/infermux/docs/",
+      "tutorialsUrl": "/infermux/tutorials/",
+      "githubUrl": "https://github.com/greynewell/infermux",
+      "installCmd": "go get github.com/greynewell/infermux",
+      "language": "Go",
+      "status": "stable"
     },
     {
-      "name": "SchemaFlux",
-      "description": "Compile structured data from any source. Schema validation, entity extraction, batch processing.",
-      "url": "https://schemaflux.dev"
+      "name": "schemaflux",
+      "tagline": "Compile structured data from anything.",
+      "description": "Structured data compiler. Parse markdown and frontmatter, run 12-pass IR pipeline, emit typed output.",
+      "url": "/schemaflux/",
+      "docsUrl": "/schemaflux/docs/",
+      "tutorialsUrl": "/schemaflux/tutorials/",
+      "githubUrl": "https://github.com/greynewell/schemaflux",
+      "installCmd": "go install github.com/greynewell/schemaflux/cmd/schemaflux@latest",
+      "language": "Go",
+      "status": "stable"
     },
     {
-      "name": "TokenTrace",
-      "description": "Trace every token. Track cost, latency, and quality across your entire AI stack. Alert on regressions.",
-      "url": "https://tokentrace.dev"
+      "name": "tokentrace",
+      "tagline": "Trace every token.",
+      "description": "Observability for AI inference. Track cost, latency, and quality across your stack. Alert on regressions.",
+      "url": "/tokentrace/",
+      "docsUrl": "/tokentrace/docs/",
+      "tutorialsUrl": "/tokentrace/tutorials/",
+      "githubUrl": "https://github.com/greynewell/tokentrace",
+      "installCmd": "go get github.com/greynewell/tokentrace",
+      "language": "Go",
+      "status": "stable"
+    },
+    {
+      "name": "mist-go",
+      "tagline": "The MIST stack core library.",
+      "description": "Shared Go library implementing the MIST protocol. Protocol, transport, metrics, circuit breaking, checkpointing. Zero external dependencies.",
+      "url": "/mist-go/",
+      "docsUrl": "/mist-go/docs/",
+      "githubUrl": "https://github.com/greynewell/mist-go",
+      "installCmd": "go get github.com/greynewell/mist-go",
+      "language": "Go",
+      "status": "stable"
+    }
+  ],
+  "useCases": [
+    {
+      "title": "AI Agents",
+      "description": "Cascading errors, context rot, and agents that ignore instructions. What the benchmarks don't show about production agents.",
+      "url": "/pillars/ai-agents/",
+      "challenge": "/challenges/ai-agents/"
+    },
+    {
+      "title": "Model Harnesses",
+      "description": "Bad data, silent failures, and catastrophic forgetting. The real problems behind fine-tuning that tutorials skip.",
+      "url": "/pillars/model-harnesses/",
+      "challenge": "/challenges/model-harnesses/"
+    },
+    {
+      "title": "RL Environments",
+      "description": "Reward hacking, reproducibility crises, and the debugging abyss. Why RL training fails and what's missing from the toolchain.",
+      "url": "/pillars/rl-environments/",
+      "challenge": "/challenges/rl-environments/"
     }
   ]
 }

@@ -1,0 +1,59 @@
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0 2rem;
+    margin-top: 5rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .footer-inner { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-col-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.25rem; }
+  .footer-links { display: flex; flex-direction: column; gap: 0.35rem; }
+  .footer-links a { color: var(--text-muted); font-size: 0.78rem; }
+  .footer-links a:hover { color: var(--accent); text-decoration: none; }
+  .footer-bottom { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; font-size: 0.72rem; color: var(--text-muted); }
+</style>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-col-label">Tools</div>
+        <div class="footer-links">
+          {% for tool in site.tools %}
+          <a href="{{ tool.url }}">{{ tool.name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Docs</div>
+        <div class="footer-links">
+          {% for tool in site.tools %}
+          <a href="{{ tool.docsUrl }}">{{ tool.name }} docs</a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Use Cases</div>
+        <div class="footer-links">
+          {% for uc in site.useCases %}
+          <a href="{{ uc.url }}">{{ uc.title }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Project</div>
+        <div class="footer-links">
+          <a href="{{ site.repo }}" target="_blank" rel="noopener">GitHub ↗</a>
+          <a href="/sitemap.xml">Sitemap</a>
+          <a href="/llms.txt">llms.txt</a>
+          <a href="{{ site.authorUrl }}">{{ site.author }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>MIST Stack &mdash; See through the mist.</span>
+      <span>Built with <a href="/mist-go/">mist-go</a></span>
+    </div>
+  </div>
+</footer>

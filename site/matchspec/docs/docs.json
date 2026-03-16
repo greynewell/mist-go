@@ -1,0 +1,41 @@
+{
+  "templateEngineOverride": "md",
+  "layout": "docs-layout.njk",
+  "tool": "matchspec",
+  "docPage": true,
+  "nav": [
+    {
+      "section": "Getting Started",
+      "pages": [
+        { "slug": "overview",    "title": "Overview",   "desc": "What matchspec is and how it fits into your stack." },
+        { "slug": "quick-start", "title": "Quick Start", "desc": "Run your first eval suite in five minutes." },
+        { "slug": "installation","title": "Installation","desc": "Install the CLI and Go package." }
+      ]
+    },
+    {
+      "section": "Core Concepts",
+      "pages": [
+        { "slug": "datasets",    "title": "Datasets",   "desc": "Define evaluation inputs and expected outputs." },
+        { "slug": "graders",     "title": "Graders",    "desc": "Score model outputs: exact match, regex, semantic, LLM-as-judge." },
+        { "slug": "harnesses",   "title": "Harnesses",  "desc": "Wire datasets and graders into a runnable eval suite." },
+        { "slug": "thresholds",  "title": "Thresholds", "desc": "Set pass/fail thresholds and statistical confidence." }
+      ]
+    },
+    {
+      "section": "Reference",
+      "pages": [
+        { "slug": "cli",         "title": "CLI Reference",   "desc": "All commands, flags, and exit codes." },
+        { "slug": "http-api",    "title": "HTTP API",        "desc": "Run evals and retrieve results over HTTP." },
+        { "slug": "config",      "title": "Configuration",   "desc": "matchspec.yml schema and defaults." },
+        { "slug": "go-api",      "title": "Go API",          "desc": "Programmatic access from Go code." }
+      ]
+    },
+    {
+      "section": "Guides",
+      "pages": [
+        { "slug": "ci-cd",       "title": "CI/CD Integration", "desc": "Gate deployments in GitHub Actions and other CI systems." },
+        { "slug": "custom-graders","title": "Custom Graders",  "desc": "Write graders for domain-specific correctness definitions." }
+      ]
+    }
+  ]
+}

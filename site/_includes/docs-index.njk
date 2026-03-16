@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ tool }} Docs — {{ site.title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  {% include "shared-css.njk" %}
+  <style>
+    .tool-tabs { border-bottom: 1px solid var(--border); }
+    .tool-tabs .container { display: flex; gap: 0; }
+    .tool-tabs a {
+      color: var(--text-muted); text-decoration: none;
+      padding: 0.65rem 1rem; font-size: 0.8rem;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.1s, border-color 0.1s; white-space: nowrap;
+    }
+    .tool-tabs a:hover { color: var(--heading); text-decoration: none; }
+    .tool-tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    main { padding: 3rem 0; }
+    .docs-hub-title { margin-bottom: 0.5rem; }
+    .docs-hub-desc { color: var(--text-muted); margin-bottom: 3rem; max-width: 560px; font-size: 0.9rem; }
+
+    .docs-section { margin-bottom: 2.5rem; }
+    .docs-section h2 {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-muted);
+      margin: 0 0 0.75rem; padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .docs-section-pages { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.75rem; }
+    .docs-page-link {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 1rem 1.1rem;
+      text-decoration: none; transition: border-color 0.15s; display: block;
+    }
+    .docs-page-link:hover { border-color: var(--accent-dim); text-decoration: none; }
+    .docs-page-link h3 { font-size: 0.875rem; color: var(--heading); margin: 0 0 0.25rem; }
+    .docs-page-link p { font-size: 0.75rem; color: var(--text-muted); margin: 0; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  {% include "nav.njk" %}
+
+  {% set toolData = null %}
+  {% for t in site.tools %}{% if t.name === tool %}{% set toolData = t %}{% endif %}{% endfor %}
+
+  <div class="tool-tabs">
+    <div class="container">
+      <a href="/{{ tool }}/">Overview</a>
+      <a href="/{{ tool }}/docs/" class="active">Docs</a>
+      {% if toolData and toolData.tutorialsUrl %}<a href="{{ toolData.tutorialsUrl }}">Tutorials</a>{% endif %}
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <h1 class="docs-hub-title">{{ tool }} Documentation</h1>
+      <p class="docs-hub-desc">{{ description }}</p>
+
+      {% if nav %}
+        {% for section in nav %}
+        <div class="docs-section">
+          <h2>{{ section.section }}</h2>
+          <div class="docs-section-pages">
+            {% for item in section.pages %}
+            <a href="/{{ tool }}/docs/{{ item.slug }}/" class="docs-page-link">
+              <h3>{{ item.title }}</h3>
+              {% if item.desc %}<p>{{ item.desc }}</p>{% endif %}
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </main>
+
+  {% include "footer.njk" %}
+</body>
+</html>

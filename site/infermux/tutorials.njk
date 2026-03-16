@@ -1,0 +1,44 @@
+---
+layout: tutorials-index.njk
+tool: infermux
+description: "Step-by-step guides for routing inference requests with infermux. Set up providers, configure failover, and optimize costs."
+---
+
+<a href="/infermux/tutorials/first-route/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Route your first inference request</h3>
+    <span class="tutorial-time">10 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">beginner</span>
+    <span class="tutorial-tag">setup</span>
+    <span class="tutorial-tag">routing</span>
+  </div>
+  <p>Install infermux, write a minimal config with one provider, start the server, and send your first request through the router.</p>
+</a>
+
+<a href="/infermux/tutorials/failover-setup/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Set up automatic failover between OpenAI and Anthropic</h3>
+    <span class="tutorial-time">20 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">intermediate</span>
+    <span class="tutorial-tag">circuit breaking</span>
+    <span class="tutorial-tag">failover</span>
+  </div>
+  <p>Configure OpenAI as primary and Anthropic as fallback. Tune circuit breaker thresholds, test failure scenarios, and verify automatic recovery.</p>
+</a>
+
+<a href="/infermux/tutorials/cost-optimization/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Optimize inference costs with routing strategies</h3>
+    <span class="tutorial-time">25 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">intermediate</span>
+    <span class="tutorial-tag">cost tracking</span>
+    <span class="tutorial-tag">budgets</span>
+  </div>
+  <p>Route requests to the cheapest available provider, set per-caller spend caps, and read cost reports from the management API.</p>
+</a>

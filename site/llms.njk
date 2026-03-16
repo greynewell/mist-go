@@ -1,0 +1,33 @@
+---
+permalink: /llms.txt
+eleventyExcludeFromCollections: true
+---
+# {{ site.title }} Stack
+
+> {{ site.description }}
+
+## About
+
+The MIST stack is eval-driven infrastructure for AI systems. Four Go tools, zero external dependencies, one universal message protocol.
+
+MIST stands for MatchSpec, InferMux, SchemaFlux, TokenTrace.
+
+## Tools
+{% for tool in site.tools %}
+- {{ tool.name }}: {{ tool.description }}
+  - Landing: {{ site.url }}{{ tool.url }}
+  - Docs: {{ site.url }}{{ tool.docsUrl }}
+{%- endfor %}
+
+## Use Cases
+
+{% for uc in site.useCases %}
+- {{ uc.title }}: {{ uc.description }}
+  - {{ site.url }}{{ uc.url }}
+{%- endfor %}
+
+## Links
+
+- Site: {{ site.url }}
+- Repo: {{ site.repo }}
+- Author: {{ site.authorUrl }}

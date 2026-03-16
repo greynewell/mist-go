@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} — {{ tagline }} — {{ site.title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  {% include "shared-css.njk" %}
+  <style>
+    /* Tool hero */
+    .tool-hero { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--border); }
+    .tool-hero-badges { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+    .tool-hero h1 { font-size: 2.2rem; margin-bottom: 0.4rem; }
+    .tool-hero .tagline { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+    .tool-hero-install { margin-bottom: 1.75rem; }
+    .tool-hero-ctas { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    /* Features */
+    .features { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+    .feature-card h3 { font-size: 0.9rem; margin: 0 0 0.4rem; color: var(--heading); }
+    .feature-card p { font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.6; }
+
+    /* Terminal section */
+    .tool-terminal { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+    .tool-terminal h2 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 1rem; }
+
+    /* Main content */
+    .tool-content { padding: 2.5rem 0; max-width: 680px; }
+    .tool-content h2 { font-size: 1.3rem; margin-top: 2.5rem; }
+    .tool-content h3 { font-size: 1.05rem; margin-top: 2rem; }
+
+    /* Continue section */
+    .tool-continue { padding: 2.5rem 0; border-top: 1px solid var(--border); }
+    .tool-continue h2 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .continue-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+    .continue-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+      text-decoration: none;
+      transition: border-color 0.15s;
+      display: block;
+    }
+    .continue-card:hover { border-color: var(--accent-dim); text-decoration: none; }
+    .continue-card h3 { font-size: 0.875rem; color: var(--heading); margin: 0 0 0.3rem; }
+    .continue-card p { font-size: 0.78rem; color: var(--text-muted); margin: 0; }
+  </style>
+</head>
+<body>
+  {% include "nav.njk" %}
+
+  {% set toolData = null %}
+  {% for t in site.tools %}{% if t.name === title or t.name === tool %}{% set toolData = t %}{% endif %}{% endfor %}
+
+  <main>
+    <div class="container">
+
+      <div class="tool-hero">
+        <div class="tool-hero-badges">
+          {% if language %}<span class="badge badge-go">{{ language }}</span>{% endif %}
+          {% if status == "stable" %}<span class="badge badge-stable">stable</span>{% elif status == "beta" %}<span class="badge badge-beta">beta</span>{% endif %}
+        </div>
+        <h1>{{ title }}</h1>
+        <p class="tagline">{{ tagline }}</p>
+        <div class="tool-hero-install">
+          <div class="install">{{ installCmd }}</div>
+        </div>
+        <div class="tool-hero-ctas btn-group">
+          <a href="./docs/" class="btn btn-primary">Docs →</a>
+          {% if toolData and toolData.tutorialsUrl %}<a href="./tutorials/" class="btn btn-secondary">Tutorials</a>{% endif %}
+          <a href="{{ githubUrl }}" class="btn btn-ghost" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+
+      {% if features %}
+      <div class="features">
+        <div class="features-grid">
+          {% for f in features %}
+          <div class="feature-card">
+            <h3>{{ f.title }}</h3>
+            <p>{{ f.description }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if terminalDemo %}
+      <div class="tool-terminal">
+        <h2>Example</h2>
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-label">{{ title }}</span>
+          </div>
+          <div class="terminal-body">{{ terminalDemo }}</div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="tool-content">
+        {{ content | safe }}
+      </div>
+
+      <div class="tool-continue">
+        <h2>Continue</h2>
+        <div class="continue-cards">
+          <a href="./docs/" class="continue-card">
+            <h3>Documentation →</h3>
+            <p>Complete reference for all APIs, configuration, and CLI flags.</p>
+          </a>
+          {% if toolData and toolData.tutorialsUrl %}
+          <a href="./tutorials/" class="continue-card">
+            <h3>Tutorials →</h3>
+            <p>Step-by-step guides for common workflows and real-world integrations.</p>
+          </a>
+          {% endif %}
+          <a href="{{ githubUrl }}" class="continue-card" target="_blank" rel="noopener">
+            <h3>GitHub ↗</h3>
+            <p>Source code, issues, and releases for {{ title }}.</p>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  {% include "footer.njk" %}
+  <script>
+    document.querySelectorAll('.terminal-body').forEach(function(el) {
+      el.innerHTML = el.textContent.split('\n').map(function(line) {
+        var t = line.trimStart();
+        if (t.startsWith('#')) return '<span style="color:#6a9955">' + line + '</span>';
+        if (t.startsWith('$') || t.startsWith('>')) return '<span style="color:#4ec9b0">' + line + '</span>';
+        if (/error|Error|FAIL|fatal/i.test(line)) return '<span style="color:#f48771">' + line + '</span>';
+        if (/\bok\b|PASS|✓|success/i.test(line)) return '<span style="color:#4ec9b0">' + line + '</span>';
+        return line;
+      }).join('\n');
+    });
+  </script>
+</body>
+</html>

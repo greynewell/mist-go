@@ -1,0 +1,35 @@
+{
+  "templateEngineOverride": "md",
+  "layout": "docs-layout.njk",
+  "tool": "mist-go",
+  "docPage": true,
+  "nav": [
+    {
+      "section": "Getting Started",
+      "pages": [
+        { "slug": "overview",      "title": "Overview",    "desc": "Architecture, packages, and design principles." },
+        { "slug": "installation",  "title": "Installation","desc": "Add mist-go to your Go module." }
+      ]
+    },
+    {
+      "section": "Packages",
+      "pages": [
+        { "slug": "protocol",      "title": "protocol",     "desc": "Message envelope, role definitions, and wire format." },
+        { "slug": "transport",     "title": "transport",    "desc": "HTTP, file, stdio, and channel transports." },
+        { "slug": "trace",         "title": "trace",        "desc": "Distributed tracing and span management." },
+        { "slug": "metrics",       "title": "metrics",      "desc": "Counters, gauges, histograms, and alert rules." },
+        { "slug": "config",        "title": "config",       "desc": "Configuration loading with environment variable overlay." },
+        { "slug": "health",        "title": "health & lifecycle", "desc": "Health checks, readiness probes, and graceful shutdown." },
+        { "slug": "circuitbreaker","title": "circuitbreaker","desc": "Circuit breaker with configurable thresholds and recovery." },
+        { "slug": "checkpoint",    "title": "checkpoint",   "desc": "Persist and resume long-running eval and agent jobs." },
+        { "slug": "parallel",      "title": "parallel",     "desc": "Worker pool for concurrent eval execution." }
+      ]
+    },
+    {
+      "section": "Reference",
+      "pages": [
+        { "slug": "package-index", "title": "All 19 Packages", "desc": "Complete index of every package in mist-go." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "miststack-site",
+  "version": "2.0.0",
+  "private": true,
+  "description": "miststack.dev — the MIST developer hub",
+  "scripts": {
+    "build": "npx @11ty/eleventy",
+    "start": "npx @11ty/eleventy --serve",
+    "serve": "npx @11ty/eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "markdown-it": "^14.1.0"
+  }
+}

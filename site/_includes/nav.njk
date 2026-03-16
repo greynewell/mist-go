@@ -1,0 +1,52 @@
+<style>
+  .site-nav {
+    border-bottom: 1px solid var(--border);
+    padding: 0.85rem 0;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+  .site-nav .container { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .site-nav .logo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .site-nav .logo:hover { color: var(--accent); text-decoration: none; }
+  .nav-tools { display: flex; gap: 0; align-items: center; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .nav-tools a {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-decoration: none;
+    padding: 0.25rem 0.7rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: color 0.1s, background 0.1s;
+  }
+  .nav-tools a:hover { color: var(--heading); text-decoration: none; background: var(--bg-card); }
+  .nav-tools a.active { color: var(--accent); }
+  .nav-github { flex-shrink: 0; font-size: 0.8rem; color: var(--text-muted); }
+  .nav-github:hover { color: var(--accent); text-decoration: none; }
+  @media (max-width: 540px) {
+    .site-nav .logo { font-size: 0.9rem; }
+    .nav-tools { gap: 0; }
+    .nav-tools a { padding: 0.2rem 0.5rem; font-size: 0.75rem; }
+  }
+</style>
+<nav class="site-nav">
+  <div class="container">
+    <a href="/" class="logo">MIST</a>
+    <div class="nav-tools">
+      <a href="/matchspec/"{% if page.url.startsWith("/matchspec/") %} class="active"{% endif %}>matchspec</a>
+      <a href="/infermux/"{% if page.url.startsWith("/infermux/") %} class="active"{% endif %}>infermux</a>
+      <a href="/schemaflux/"{% if page.url.startsWith("/schemaflux/") %} class="active"{% endif %}>schemaflux</a>
+      <a href="/tokentrace/"{% if page.url.startsWith("/tokentrace/") %} class="active"{% endif %}>tokentrace</a>
+      <a href="/mist-go/"{% if page.url.startsWith("/mist-go/") %} class="active"{% endif %}>mist-go</a>
+    </div>
+    <a href="{{ site.repo }}" class="nav-github" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>

@@ -1,0 +1,45 @@
+---
+layout: tool-home.njk
+title: infermux
+tool: infermux
+tagline: "Route inference. Survive failure."
+description: "infermux routes inference requests across LLM providers with automatic failover, circuit breaking, and cost tracking. Drop-in OpenAI-compatible API."
+language: Go
+status: stable
+githubUrl: "https://github.com/greynewell/infermux"
+installCmd: "go get github.com/greynewell/infermux"
+features:
+  - title: "Provider-agnostic routing"
+    description: "OpenAI, Anthropic, Ollama, Azure OpenAI, and any OpenAI-compatible endpoint. Add providers in config, not code."
+  - title: "Automatic failover"
+    description: "Circuit breakers open on provider failure. Requests route to healthy providers automatically. No intervention required."
+  - title: "Cost tracking"
+    description: "Per-request token accounting. Attribute spend by model, provider, and caller. Set budgets and get alerted."
+  - title: "OpenAI-compatible API"
+    description: "Drop-in replacement for the OpenAI API. Point any OpenAI client at infermux and it works."
+  - title: "Load balancing"
+    description: "Round-robin, least-latency, and cost-weighted routing strategies. Configurable per route."
+  - title: "Zero dependencies"
+    description: "Built on mist-go. Ships as a single binary with no runtime requirements."
+terminalDemo: |
+  $ infermux serve --config infermux.yml
+
+  providers: openai (healthy), anthropic (healthy), ollama (healthy)
+  listening on :8080
+
+  # In another terminal:
+  $ curl http://localhost:8080/v1/chat/completions \
+      -H "Content-Type: application/json" \
+      -d '{"model": "gpt-4o", "messages": [{"role": "user", "content": "hello"}]}'
+
+  # Routes to cheapest available provider
+  # Falls back automatically if primary is down
+---
+
+LLM providers fail. They return 429s under load, go down for maintenance, and silently degrade quality. Most production systems handle this with ad-hoc retry logic scattered across application code — a different strategy in every service, no shared visibility, and no accounting for what things cost. infermux centralizes inference routing into a single process that your application treats like any OpenAI-compatible API. It handles provider selection, failure detection, failover, and cost attribution before your application code ever sees a response.
+
+The architecture is a chain of three components. The **provider registry** holds your configured providers — their endpoints, credentials, rate limits, and model mappings. The **router** receives each incoming request and selects a target provider based on the configured routing strategy (round-robin, least-latency, cost-weighted, or priority). The **circuit breaker** sits in front of each provider and tracks its error rate and latency. When a provider trips a threshold, its circuit opens and the router stops sending requests to it until a recovery probe succeeds. Together these components give you automatic failover without any changes to the application code that calls infermux.
+
+Cost tracking is built into every request path. infermux reads token counts from provider responses (or estimates them for providers that don't return them), looks up per-token pricing from its internal pricing tables, and records the cost against configurable attribution fields — a caller ID, a model name, a route group, or all three. Budget limits can be configured per caller with either a hard stop (infermux returns a 429 before sending the request) or a soft alert (the request proceeds but an alert fires). Cost reports are available via the management HTTP API and aggregate in real time without any external storage.
+
+infermux is built on [mist-go](https://miststack.dev/mist-go/) and uses its `circuitbreaker`, `transport`, `metrics`, and `protocol` packages directly. Circuit breaking configuration maps to mist-go's `circuitbreaker.Config` struct. Cost events are emitted as mist-go metrics, which means they flow into any tokentrace deployment you already have. If you run the full MIST stack, infermux becomes the inference layer that feeds structured cost and latency data into your eval pipeline: matchspec can gate on cost-per-query or latency regressions, not just output quality.

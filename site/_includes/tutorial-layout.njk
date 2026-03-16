@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} — {{ tool }} tutorial — {{ site.title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  {% include "shared-css.njk" %}
+  <style>
+    .tool-tabs { border-bottom: 1px solid var(--border); }
+    .tool-tabs .container { display: flex; gap: 0; }
+    .tool-tabs a {
+      color: var(--text-muted); text-decoration: none;
+      padding: 0.65rem 1rem; font-size: 0.8rem;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.1s, border-color 0.1s; white-space: nowrap;
+    }
+    .tool-tabs a:hover { color: var(--heading); text-decoration: none; }
+    .tool-tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    main { padding: 3rem 0; }
+    .tutorial-content { max-width: 680px; }
+    .tutorial-content h1 { font-size: 1.8rem; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .tutorial-content h2 { font-size: 1.25rem; margin-top: 2.5rem; margin-bottom: 0.75rem; }
+    .tutorial-content h3 { font-size: 1.05rem; margin-top: 2rem; margin-bottom: 0.6rem; }
+    .tutorial-meta {
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
+      margin-bottom: 2rem; font-size: 0.78rem; color: var(--text-muted);
+    }
+    .tutorial-meta .meta-tag { background: var(--bg-card); border: 1px solid var(--border); padding: 0.1rem 0.45rem; border-radius: 3px; }
+    .tutorial-back { margin-bottom: 2rem; }
+    .tutorial-back a { color: var(--text-muted); font-size: 0.8rem; }
+    .tutorial-back a:hover { color: var(--accent); }
+
+    .step { border-left: 2px solid var(--border); padding-left: 1.25rem; margin-bottom: 2rem; }
+    .step:last-child { border-left-color: var(--accent-dim); }
+    .step-number { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.4rem; }
+
+    .callout { border-left: 3px solid var(--border); padding: 0.75rem 1rem; margin: 1.5rem 0; background: var(--bg-card); border-radius: 0 6px 6px 0; font-size: 0.875rem; }
+    .callout.note { border-color: var(--accent-dim); }
+    .callout.warning { border-color: #b45309; }
+    .callout p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  {% include "nav.njk" %}
+
+  {% set toolData = null %}
+  {% for t in site.tools %}{% if t.name === tool %}{% set toolData = t %}{% endif %}{% endfor %}
+
+  <div class="tool-tabs">
+    <div class="container">
+      <a href="/{{ tool }}/">Overview</a>
+      <a href="/{{ tool }}/docs/">Docs</a>
+      <a href="/{{ tool }}/tutorials/" class="active">Tutorials</a>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="tutorial-back">
+        <a href="/{{ tool }}/tutorials/">← All {{ tool }} tutorials</a>
+      </div>
+      <div class="tutorial-content">
+        {{ content | safe }}
+      </div>
+    </div>
+  </main>
+
+  {% include "footer.njk" %}
+  <script>
+    document.querySelectorAll('.terminal-body').forEach(function(el) {
+      el.innerHTML = el.textContent.split('\n').map(function(line) {
+        var t = line.trimStart();
+        if (t.startsWith('#')) return '<span style="color:#6a9955">' + line + '</span>';
+        if (t.startsWith('$') || t.startsWith('>')) return '<span style="color:#4ec9b0">' + line + '</span>';
+        if (/error|Error|FAIL|fatal/i.test(line)) return '<span style="color:#f48771">' + line + '</span>';
+        if (/\bok\b|PASS|✓|success/i.test(line)) return '<span style="color:#4ec9b0">' + line + '</span>';
+        return line;
+      }).join('\n');
+    });
+  </script>
+</body>
+</html>

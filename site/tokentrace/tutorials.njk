@@ -1,0 +1,44 @@
+---
+layout: tutorials-index.njk
+tool: tokentrace
+description: "Step-by-step tutorials for tokentrace. Learn how to instrument your first inference call, set up cost and quality alerts, and build a Grafana dashboard for AI system observability."
+---
+
+<a href="./tutorials/first-trace/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Instrument Your First Inference Call</h3>
+    <span class="tutorial-time">10 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">beginner</span>
+    <span class="tutorial-tag">traces</span>
+    <span class="tutorial-tag">go api</span>
+  </div>
+  <p>Add tokentrace to an existing Go program, instrument a single inference call with Start/Record/End, and inspect the structured trace output. Full working code included.</p>
+</a>
+
+<a href="./tutorials/cost-alerts/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Set Up Cost and Quality Alerts</h3>
+    <span class="tutorial-time">20 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">intermediate</span>
+    <span class="tutorial-tag">alerts</span>
+    <span class="tutorial-tag">webhooks</span>
+  </div>
+  <p>Define cost_spike and quality_drop alert rules, configure webhook delivery, and attach matchspec eval scores to spans so quality regressions page you before users notice.</p>
+</a>
+
+<a href="./tutorials/grafana-dashboard/" class="tutorial-card">
+  <div class="tutorial-card-header">
+    <h3>Build a Grafana Dashboard</h3>
+    <span class="tutorial-time">25 min</span>
+  </div>
+  <div class="tutorial-meta">
+    <span class="tutorial-tag">intermediate</span>
+    <span class="tutorial-tag">prometheus</span>
+    <span class="tutorial-tag">grafana</span>
+  </div>
+  <p>Export tokentrace metrics to Prometheus, import the pre-built dashboard JSON, and customize panels for cost over time, latency heatmap, model usage breakdown, and alert history.</p>
+</a>

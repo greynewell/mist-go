@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ tool }} Tutorials — {{ site.title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  {% include "shared-css.njk" %}
+  <style>
+    .tool-tabs { border-bottom: 1px solid var(--border); }
+    .tool-tabs .container { display: flex; gap: 0; }
+    .tool-tabs a {
+      color: var(--text-muted); text-decoration: none;
+      padding: 0.65rem 1rem; font-size: 0.8rem;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.1s, border-color 0.1s; white-space: nowrap;
+    }
+    .tool-tabs a:hover { color: var(--heading); text-decoration: none; }
+    .tool-tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    main { padding: 3rem 0; }
+    .tutorials-hub-title { margin-bottom: 0.5rem; }
+    .tutorials-hub-desc { color: var(--text-muted); margin-bottom: 2.5rem; max-width: 560px; font-size: 0.9rem; }
+
+    .tutorial-list { display: flex; flex-direction: column; gap: 1rem; max-width: 680px; }
+    .tutorial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      text-decoration: none;
+      transition: border-color 0.15s;
+      display: block;
+    }
+    .tutorial-card:hover { border-color: var(--accent-dim); text-decoration: none; }
+    .tutorial-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.4rem; }
+    .tutorial-card h3 { font-size: 1rem; color: var(--heading); margin: 0; }
+    .tutorial-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem; }
+    .tutorial-tag { font-size: 0.68rem; color: var(--text-muted); background: var(--bg); border: 1px solid var(--border); padding: 0.1rem 0.45rem; border-radius: 3px; }
+    .tutorial-time { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+    .tutorial-card p { font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  {% include "nav.njk" %}
+
+  {% set toolData = null %}
+  {% for t in site.tools %}{% if t.name === tool %}{% set toolData = t %}{% endif %}{% endfor %}
+
+  <div class="tool-tabs">
+    <div class="container">
+      <a href="/{{ tool }}/">Overview</a>
+      <a href="/{{ tool }}/docs/">Docs</a>
+      <a href="/{{ tool }}/tutorials/" class="active">Tutorials</a>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <h1 class="tutorials-hub-title">{{ tool }} Tutorials</h1>
+      <p class="tutorials-hub-desc">{{ description }}</p>
+
+      <div class="tutorial-list">
+        {{ content | safe }}
+      </div>
+    </div>
+  </main>
+
+  {% include "footer.njk" %}
+</body>
+</html>

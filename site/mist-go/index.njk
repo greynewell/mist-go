@@ -1,0 +1,56 @@
+---
+layout: tool-home.njk
+title: mist-go
+tool: mist-go
+tagline: "The MIST stack core library."
+description: "mist-go is the shared Go library implementing the MIST protocol. 19 packages, zero external dependencies, 652+ tests. The foundation for matchspec, infermux, schemaflux, and tokentrace."
+language: Go
+status: stable
+githubUrl: "https://github.com/greynewell/mist-go"
+installCmd: "go get github.com/greynewell/mist-go"
+features:
+  - title: "Protocol-first"
+    description: "Every MIST tool communicates via the MIST message protocol. Transport is pluggable — HTTP, file, stdio, channels."
+  - title: "19 composable packages"
+    description: "Use just the packages you need. Protocol and transport for routing. Trace and metrics for observability. Checkpoint for durability."
+  - title: "Zero external dependencies"
+    description: "go.mod lists no third-party dependencies. Everything is built on the Go standard library."
+  - title: "652+ tests"
+    description: "Full test suite with race detection and fuzz targets. Every package tested in isolation and integration."
+  - title: "Production-hardened"
+    description: "Used in swe-bench-fast (6.3x speedup on ARM64) and all MIST stack tools."
+  - title: "Well-typed protocol"
+    description: "Strongly typed message envelopes, role definitions, and wire format. No interface{} in the protocol layer."
+terminalDemo: |
+  import (
+      "github.com/greynewell/mist-go/protocol"
+      "github.com/greynewell/mist-go/transport"
+      "github.com/greynewell/mist-go/trace"
+  )
+
+  // Create a typed message with a structured payload
+  msg, err := protocol.New("matchspec", protocol.TypeEvalRun, protocol.EvalRun{
+      Suite:    "swe-bench-verified",
+      InferURL: "http://localhost:8081",
+  })
+
+  // File transport for local dev, HTTP for production
+  t, err := transport.Dial("http://localhost:8080")
+  if err := t.Send(ctx, msg); err != nil {
+      log.Fatal(err)
+  }
+
+  // Zero-overhead tracing propagates through context
+  ctx, span := trace.Start(ctx, "inference")
+  defer span.End("ok")
+  span.SetAttr("model", "claude-sonnet-4-5")
+  span.SetAttr("tokens_out", 512)
+---
+
+mist-go is a shared Go library — the foundation that [matchspec](/matchspec/), [infermux](/infermux/), [schemaflux](/schemaflux/), and [tokentrace](/tokentrace/) are all built on. Rather than each tool reimplementing transport handling, configuration loading, circuit breaking, and observability independently, those concerns live in mist-go and are shared across the entire stack. The result is a consistent programming model: code written against mist-go works the same way in every MIST tool, and every MIST tool exposes the same operational surface.
+
+The library is organized around a protocol-first design principle. Every message that crosses a tool boundary — an inference request from matchspec to infermux, a trace span from infermux to tokentrace, a schema definition from schemaflux to downstream consumers — uses the same `protocol.Message` envelope. The envelope carries a version, a random message ID, a source identifier, a type string, a nanosecond timestamp, a JSON payload, and an optional CRC32 checksum. This uniformity means tools can route, log, and audit messages without knowing their contents, and the `transport` package can carry any message over any wire without modification.
+
+The transport abstraction is deliberately thin. The `Transport` interface has three methods: `Send`, `Receive`, and `Close`. `transport.Dial` selects an implementation based on a URL scheme: `http://` for network services, `file://` for batch pipelines, `stdio://` for Unix pipes, and `chan://` for in-process testing. Swapping HTTP for file or stdio requires changing one line in your configuration — the application code that calls `Send` and `Receive` does not change. This is particularly valuable for testing: a test that uses `transport.NewChannelPair` instead of `transport.NewHTTP` gets full coverage of application logic with no network required.
+
+Zero external dependencies is a non-negotiable constraint for infrastructure code. A library that pulls in third-party packages creates supply chain exposure, makes vendoring harder, and creates version conflict risk when the library is embedded in other projects. mist-go implements everything it needs from the Go standard library: a TOML parser, a structured logger wrapper (built on `log/slog`, standard since Go 1.21), distributed tracing, metrics with lock-free atomic operations, exponential backoff with jitter, circuit breaking with configurable thresholds, and W3C Trace Context propagation over HTTP. The `go.mod` lists nothing beyond the module declaration and the Go version requirement.

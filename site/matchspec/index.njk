@@ -38,10 +38,8 @@ terminalDemo: |
   0
 ---
 
-AI systems are hard to evaluate because correctness isn't always binary, outputs are stochastic, and what counts as "right" depends on context the model never had. matchspec is an eval framework built around the idea that the best way to handle this is to make correctness a first-class engineering artifact — something you write, version, review, and run in CI — rather than a qualitative judgement made at demo time.
+Ship evals before you ship features. matchspec is the enforcement layer between your prompt and your production deployment — define correctness, measure it reproducibly, fail the build when it regresses.
 
-The core model is straightforward: a **dataset** is a collection of input/expected-output pairs. A **grader** is a function that takes a model output and returns a score between 0 and 1. A **harness** wires a dataset to a model and one or more graders, then runs each example through the model and scores the result. A **suite** collects one or more harnesses and reports aggregate pass rates against configurable thresholds. If the suite passes, `matchspec run` exits 0. If it fails, it exits non-zero and prints a report showing which graders fell below threshold and by how much.
+Graders compose. Run `exact_match` and `semantic_similarity` on the same output, weight them, add an `llm_judge` step for anything that needs nuance. The `Grader` interface is a single method, so custom graders are easy to write and test in isolation.
 
-Graders compose. You can run `exact_match` and `semantic_similarity` in parallel on the same output and combine their scores with per-grader weights. You can write a custom grader that calls an embedding model, or an `llm_judge` grader that asks a second language model to score the output on a rubric you define. matchspec ships with five built-in grader types and a clean interface for adding your own — the `Grader` interface is a single method that returns a `Score`, which makes it straightforward to test graders in isolation before wiring them into a suite.
-
-Statistical validity matters at scale. When your dataset is small, a pass rate of 0.74 could easily be 0.68 or 0.80 at the true population level. matchspec computes Wilson score confidence intervals for each grader and lets you set a minimum sample size requirement so that thresholds only apply when you have enough data to trust them. This is not typical of eval frameworks, which usually treat every run as ground truth regardless of sample size.
+`matchspec run` exits non-zero on failure. No custom CI logic required.
